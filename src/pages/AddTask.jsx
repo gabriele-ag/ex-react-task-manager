@@ -1,9 +1,13 @@
 // Conterrà il form per aggiungere nuove Task
 
-import  { useState, useRef } from "react"
+import  { useState, useRef, useContext } from "react"
+import { GlobalContext } from "../contexts/GlobalContext";
 
 
 const AddTask = () => {
+
+    // Importo addTask dal Context
+    const { addTask } = useContext(GlobalContext)
 
     // Stati degli input e stato degli errori
     const [title, setTitle] = useState("")
@@ -22,7 +26,7 @@ const AddTask = () => {
 
 
     // Gestione del form al submit
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
 
         const errors = {}
@@ -41,13 +45,13 @@ const AddTask = () => {
         if (isValid) {
             console.log("Form Validato")
 
-            const formData = {
-                title,
-                description,
-                status,
+            const newTask = { title, description, status };
+            try {
+            await addTask(newTask);
+            console.log("Task aggiunta con successo:", newTask);
+            } catch (error) {
+            console.error("Errore nell'aggiunta della task:", error.message);
             }
-
-            console.log("Dati inseriti:", formData)
         }
 
     }
