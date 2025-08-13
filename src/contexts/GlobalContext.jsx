@@ -22,6 +22,8 @@ const GlobalProvider = ({children}) => {
         fetchTask()
     }, [])
 
+    console.log(tasks)
+
     const contextValue = {
         tasks,
         setTasks,
