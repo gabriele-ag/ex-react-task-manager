@@ -51,7 +51,26 @@ function useTasks(){
         }
     }
 
-    const removeTask = () => {}
+    const removeTask = async(id) => {
+        try {
+            const response = await fetch(`${API_URL}/tasks/${id}`, {
+                method: "DELETE",
+                headers: {"Content-Type": "application/json"},
+
+            });
+
+            const result = await response.json()
+
+            if (!result.success) {
+                throw new Error(result.message || "Errore nell'eliminazione della task");
+            }
+
+            setTasks((prevTasks) => prevTasks.filter(task => task.id !== id))
+
+        } catch(error) {
+            console.error("Errore in addTask", error)
+        }
+    }
 
     const updateTask = () => {}
 
