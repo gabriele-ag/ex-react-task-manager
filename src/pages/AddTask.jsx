@@ -21,7 +21,6 @@ const AddTask = () => {
     const statusTaskRef = useRef()
 
     
-
     const symbols = "!@#$%^&*()-_=+[]{}|;:'\\\",.<>?/`~"
 
 
@@ -34,7 +33,12 @@ const AddTask = () => {
         const status = statusTaskRef.current.value
         const description = descriptionRef.current.value
 
-        if (!title.trim()) errors.title = "Il nome della task è obbligatorio"
+        if (!title.trim()) {
+            errors.title = "Il nome della task è obbligatorio";
+        } else if (!validateTaskName(title)) {
+            errors.title = "Il nome non è valido";
+        }
+        
         if (!description) errors.description = "Immetti una descrizione"
         if (!status) errors.status = "Scegli un opzione"
 
@@ -59,7 +63,7 @@ const AddTask = () => {
     const validateTaskName = (value) => {
         const isValidLength = value.length >= 6
         const hasSymbol = [...value].some((char) => symbols.includes(char))
-        return isValidLength && !hasSymbol
+        return isValidLength && !hasSymbol; 
     }
 
     const handleTaskName = (e) => {
@@ -72,7 +76,7 @@ const AddTask = () => {
         e.preventDefault()
         setTaskName("")
         descriptionRef.current.value = ""
-        optionTaskRef.current.value = ""
+        statusTaskRef.current.value = ""
     }
 
     return (
