@@ -1,8 +1,25 @@
 // Mostrerà elenco Task
 
+// GlobalContext API
+import { useContext } from "react";
+import { GlobalContext } from "../contexts/GlobalContext";
+
+
+
 const TaskList = () => {
+    const { tasks } = useContext(GlobalContext)
+
+
     return (
-        <h2>Sono pagina TaskList</h2>
+        <>
+            <div>
+                <ul>
+                {tasks.map(task => (
+                    <li key={task.id}>{task.title}</li>
+                ))}
+                </ul>
+            </div>
+        </>
     )
 }
 
