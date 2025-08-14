@@ -56,7 +56,7 @@ function useTasks(){
             const response = await fetch(`${API_URL}/tasks/${id}`, {
                 method: "DELETE",
                 headers: {"Content-Type": "application/json"},
-
+               
             });
 
             const result = await response.json()
@@ -72,10 +72,29 @@ function useTasks(){
         }
     }
 
-    const updateTask = () => {}
+    const updateTask = async (id, updatedTask) => {
+        try {
+            const response = await fetch(`${API_URL}/tasks/${id}`, {
+                method: "PUT",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(updatedTask)
+
+            });
+
+            const result = await response.json()
+
+            if (!result.success) {
+                throw new Error(result.message || "Errore nell'eliminazione della task");
+            } 
+
+            setTasks((curTask) => curTask.map(task => task.id === id ? { ...task, ...updatedTask } : task))   
+            
+        } catch(error) {
+            console.error("Errore in addTask", error)
+        }
+    }
 
 
-    console.log(tasks)
     return {tasks, addTask, removeTask, updateTask}
 
 }

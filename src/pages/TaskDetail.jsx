@@ -2,8 +2,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
 
-// Importo il Modale
+// Importo le due Modali
 import Modal from "../components/Modal";
+import EditTaskModal from "../components/EditTaskModal";
+
 
 const TaskDetail = () => {
 
@@ -14,10 +16,12 @@ const TaskDetail = () => {
     const navigate = useNavigate()
 
     // Estraggo i dati dal GlobalContext
-    const { tasks, removeTask } = useContext(GlobalContext);
+    const { tasks, removeTask, updateTask } = useContext(GlobalContext);
 
-    // Gestisco stato per mostrare il Modale
+    // Gestisco stato per mostrare le Modali
     const [showModal, setShowModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+
 
 
     // Cerco la task corrispondente
@@ -38,6 +42,17 @@ const TaskDetail = () => {
         }
     }
 
+    const handleSave = async (updatedTask) => {
+        try {
+            await updateTask(updatedTask.id, updatedTask);
+            alert("Task modificata con successo!");
+            setShowEditModal(false);
+        } catch (error) {
+            console.error("Errore durante la modifica:", error);
+            alert("Errore durante il salvataggio.");
+        }
+        };
+
 
     return (
         <div>
@@ -46,6 +61,8 @@ const TaskDetail = () => {
             <p>Stato: {singleTask.status}</p>
             <p>Data di creazione: {new Date(singleTask.createdAt).toLocaleDateString()}</p>
             <button onClick={() => setShowModal(true)}>Elimina Task</button>
+            <button onClick={() => setShowEditModal(true)}>Modifica Task</button>
+
             <Modal
             title="Conferma eliminazione"
             content={`Sei sicuro di voler eliminare la task "${singleTask.title}"? L'azione sarà irreversibile`}
@@ -53,6 +70,12 @@ const TaskDetail = () => {
             onClose={() => setShowModal(false)}
             onConfirm={handleDelete}
             confirmText="Elimina"
+            />
+            <EditTaskModal
+            show={showEditModal}
+            onClose={(e) => setShowEditModal(false)}
+            task={singleTask}
+            onSave={handleSave}            
             />
         </div>
     )
