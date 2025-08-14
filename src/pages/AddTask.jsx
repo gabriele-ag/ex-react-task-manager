@@ -74,7 +74,7 @@ const AddTask = () => {
 
     const resetForm = (e) => {
         e.preventDefault()
-        setTaskName("")
+        setTitle("")
         descriptionRef.current.value = ""
         statusTaskRef.current.value = ""
     }

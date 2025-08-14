@@ -2,11 +2,11 @@ import { NavLink } from "react-router-dom";
 
 export const AppHeader = () => {
     const links = [{
-        title: "AddTask",
+        title: "Aggiungi una task",
         url: "/",
     },
     {
-        title: "TaskList",
+        title: "Lista delle task",
         url: "/task",
         
     }];
