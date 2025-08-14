@@ -1,6 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
+
+// Importo il Modale
+import Modal from "../components/Modal";
 
 const TaskDetail = () => {
 
@@ -12,6 +15,9 @@ const TaskDetail = () => {
 
     // Estraggo i dati dal GlobalContext
     const { tasks, removeTask } = useContext(GlobalContext);
+
+    // Gestisco stato per mostrare il Modale
+    const [showModal, setShowModal] = useState(false);
 
 
     // Cerco la task corrispondente
@@ -39,7 +45,15 @@ const TaskDetail = () => {
             <p>Descrizione: {singleTask.description}</p>
             <p>Stato: {singleTask.status}</p>
             <p>Data di creazione: {new Date(singleTask.createdAt).toLocaleDateString()}</p>
-            <button onClick={handleDelete}>Elimina Task</button>
+            <button onClick={() => setShowModal(true)}>Elimina Task</button>
+            <Modal
+            title="Conferma eliminazione"
+            content={`Sei sicuro di voler eliminare la task "${singleTask.title}"? L'azione sarà irreversibile`}
+            show={showModal}
+            onClose={() => setShowModal(false)}
+            onConfirm={handleDelete}
+            confirmText="Elimina"
+            />
         </div>
     )
 
